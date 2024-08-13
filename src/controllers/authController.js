@@ -22,7 +22,10 @@ export const register = async (req, res) => {
       role,
     });
     const user = await newUser.save();
-    res.status(201).json({ message: 'Registered', user });
+    res.status(201).json({
+      message: 'Registered',
+      user: { ...user._doc, password: undefined },
+    });
   } catch (err) {
     res.status(500).json({ message: 'Registration failed', err: err });
   }
@@ -52,8 +55,8 @@ export const login = async (req, res) => {
     const token = generateToken({ user_id: user.id, user_role: user.role });
 
     // create user object without password
-    const userObj = user.toObject();
-    delete userObj.password;
+    // const userObj = user.toObject();
+    // delete userObj.password;
 
     res
       .cookie('token', token, {
@@ -62,7 +65,10 @@ export const login = async (req, res) => {
         maxAge: cookieConfig.auth.maxAge,
       })
       .status(200)
-      .json({ user: userObj, message: 'login successfull' });
+      .json({
+        user: { ...user._doc, password: undefined },
+        message: 'login successfull',
+      });
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: 'Something went wrong' });

@@ -5,6 +5,7 @@ import { FaArrowLeft } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../../services/api/bookmark';
 import toast from 'react-hot-toast';
+import { motion } from 'framer-motion';
 
 const Register = () => {
   const [formValues, setFormValues] = useState({
@@ -19,7 +20,6 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(`${value} : ${name}`);
     setFormValues({ ...formValues, [name]: value });
   };
 
@@ -101,7 +101,12 @@ const Register = () => {
       </div>
 
       <main className="flex flex-grow">
-        <div className="w-full md:w-1/2 bg-base-100 flex items-center justify-center p-8">
+        <motion.div
+          className="w-full md:w-1/2 bg-base-100 flex items-center justify-center p-8"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
           <div className="w-full max-w-md">
             {/* display the values  */}
             <pre className="text-yellow-700">
@@ -209,7 +214,7 @@ const Register = () => {
               .
             </p>
           </div>
-        </div>
+        </motion.div>
         <div
           className="hidden md:block md:w-1/2 bg-cover bg-center"
           style={{ backgroundImage: `url(${registerImage})` }}
